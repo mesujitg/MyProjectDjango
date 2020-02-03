@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <select name="product" class="form-control">
+                    {% for p in products %}
+                    <option value="{{ p.id }}">{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <textarea name="comments" id="" cols="30" rows="10" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="range" max="5" min="0" name="ratings" id="rt" class="form-control"
+                       onchange="showRating()"/>
+                <label id="rtshow"></label>
+            </div>
+            <div class="form-group">
+                <input type="file" name="image" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" name="review" value="Post Review" class="btn btn-primary"/>
+            </div>
+        </form>
+        <script>
+            function showRating()
+            {
+            var r = document.getElementById("rt").value;
+            document.getElementById("rtshow").innerHTML = r;
+            }
+
+        </script>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+
+<div class="row">
+    <script>var b = 0;</script>
+    {% for r in reviews %}
+    <div class="col-lg-4">
+        <img src="http://127.0.0.1:8000/media/{{ r.image }}" class="d-block" style="width:80%;height:150px;margin:20px auto;"/>
+        <h4 style="text-align:center;">{{ r.product }}</h4>
+        <h4 style="text-align:center;" class="star">
+            <script>
+                    var a = {{ r.ratings }};
+                    for(var i=1; i<=a; i++)
+                    {
+                    document.getElementsByClassName("star")[b].innerHTML +=
+                    '<img src="{% static 'images/star.png' %}"  style="height:15px;width:15px;">';
+                    }
+                    b++;
+            </script>
+        </h4>
+        <p style="text-align:center;">{{ r.comments }}</p>
+        <h6 style="text-align:center;"> - {{ r.user }}</h6>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

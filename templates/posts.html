@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <h1>Posts</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="title" class="form-control" placeholder="Title"/>
+                </div>
+                <div class="form-group">
+                    <textarea name="post" class="form-control" placeholder="Post"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="image" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="add_post" value="Post" class="btn btn-info"/>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th colspan="4"></th>
+                    <th colspan="2" style="width:30%">
+                        <form method="post" class="form-inline my-2 my-lg-0">
+                            {% csrf_token %}
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="search_post" value="Search" />
+                        </form>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Post</th>
+                    <th>Image</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in posts %}
+                <tr>
+                    <td>{{ p.title }}</td>
+                    <td>{{ p.user }}</td>
+                    <td>{{ p.post }}</td>
+                    <td>
+                        <img src="http://127.0.0.1:8000/media/{{ p.image }}" alt="" style="height:100px;width:250px;">
+                    </td>
+                    <td><a href="../post/edit/{{ p.id }}" class="btn btn-success"
+                           data-toggle="modal" data-target="#myModal{{ p.id }}">Edit</a></td>
+                    <td><a href="../post/delete/{{ p.id }}" class="btn btn-danger"
+                           onclick="return confirm('Are you sure?')">Delete</a></td>
+                </tr>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ p.id }}" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{ p.title }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" name="id" class="form-control"
+                                               value="{{p.id}}" hidden/>
+                                        <input type="text" name="title" class="form-control"
+                                               value="{{p.title}}" placeholder="Title"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea name="post" class="form-control" placeholder="Post">{{p.post}}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label id="img-name">{{ p.image }}</label>
+                                        <input type="file" name="image" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" name="update_post" value="Update" class="btn btn-info"/>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
