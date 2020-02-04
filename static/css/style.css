@@ -2,3 +2,19 @@ body
 {
 background: red;
 }
+.my-slider
+{
+
+}
+.my-posts
+{
+margin: 50px 0;
+}
+#carouselExampleCaptions img
+{
+    height: 300px;
+}
+.new-posts
+{
+margin: 0 3%;
+}
