@@ -17,7 +17,7 @@
                 </thead>
                 <tbdoy>
                     {% for product in products %}
-                    <tr>
+                    <tr id="pr{{ product.id }}">
                         <td>{{ product.name }}</td>
                         <td>{{ product.brand }}</td>
                         <td>{{ product.price }}</td>
