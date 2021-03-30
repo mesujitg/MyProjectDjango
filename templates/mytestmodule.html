@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 table-responsive"><h1 class="text-center">Tests</h1></div>
+    <div class="col-lg-12 table-responsive">
+        <ul>
+            {% for t in tm %}
+            <li>{{ t.user }} - {{ t.title }} - {{ t.detail }} - {{ t.file }}</li>
+            {% endfor %}
+        </ul>
+
+        <ul>
+            {{ rv }}
+<!--            {% for r in rv %}-->
+<!--            <li>{{ r.product }} - {{ r.comments }}</li>-->
+<!--            {% endfor %}-->
+        </ul>
+    </div>
+</div>
+{% endblock %}
+

@@ -37,9 +37,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../../products/">Products</a>
                     </li>
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated or request.session.username %}
                     <li class="nav-item">
                         <a class="nav-link" href="../users/">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../test/my">My Reviews</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../post/add">Add Posts</a>
@@ -50,12 +53,14 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {% if user.is_authenticated %}
                             {{ request.user }}
+                            {% elif request.session.username %}
+                            Usr
                             {% else %}
                             User
                             {% endif %}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% if user.is_authenticated %}
+                            {% if user.is_authenticated or request.session.username %}
                             <a class="dropdown-item" href="../users/logout">Log Out</a>
                             {% else %}
                             <a class="dropdown-item" href="../../users/register">Registration</a>
@@ -67,8 +72,9 @@
                         <a class="nav-link disabled" href="#">Contact Us</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline my-2 my-lg-0" action="../test/search" method="post">
+                    {% csrf_token %}
+                    <input class="form-control mr-sm-2" name="key" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>

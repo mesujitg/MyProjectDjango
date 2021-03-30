@@ -25,6 +25,7 @@ urlpatterns = [
     path('users/', include('allusers.urls')),
     path('book/', include('cart.urls')),
     path('post/', include('crud.urls')),
+    path('test/', include('testmodule.urls')),
     path('', views.show_home)
 ]
 

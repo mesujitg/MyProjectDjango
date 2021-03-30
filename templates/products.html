@@ -11,8 +11,11 @@
                     <th>Price</th>
                     <th>Features</th>
                     <th>Stock</th>
+                    {% if user.is_authenticated %}
                     <th>Order</th>
+                    {% elif request.user.is_superuser %}
                     <th>Edit</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbdoy>
@@ -23,13 +26,19 @@
                         <td>{{ product.price }}</td>
                         <td>{{ product.features }}</td>
                         <td>{{ product.qty }}</td>
-                        <td><form method="post" class="form-inline my-2 my-lg-0">
+                        {% if user.is_authenticated %}
+                        <td>
+                            <form method="post" class="form-inline my-2 my-lg-0">
                             {% csrf_token %}
                             <input type="number" name="qty" min="1" class="form-control mr-sm-2" placeholder="Enter Quantity" />
                             <input type="text" name="pid" value="{{ product.id }}" hidden />
-                            <input type="submit" value="Book" class="btn btn-outline-info my-2 my-sm-0" /></form></td>
+                            <input type="submit" value="Book" class="btn btn-outline-info my-2 my-sm-0" />
+                            </form>
+                        </td>
 <!--                        <td><a href="../book/{{ product.id }}">Book</a></td>-->
+                        {% elif request.user.is_superuser %}
                         <td><a href="../products/update/{{ product.id }}">Edit</a></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbdoy>
